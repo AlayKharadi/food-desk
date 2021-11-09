@@ -13,6 +13,7 @@ app.use(express.json());
 const routes = require('./routes');
 app.use('/API', routes.login);
 app.use('/API', routes.changepwd);
+app.use('/API', routes.sendotp);
 
 app.get('*', (req, res) => {
     res.send('Sorry, this is an invalid URL.');
