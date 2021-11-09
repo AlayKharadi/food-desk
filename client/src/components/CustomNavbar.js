@@ -18,7 +18,7 @@ const CustomNavbar = (props) => {
         <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark" sticky="top">
             <Container>
                 <NavLink className="navbar-brand" to={props.navlinks[0].path} onClick={() => setActive(props.navlinks[0].id)}>
-                    Cafeteria
+                    Food-Desk
                 </NavLink>
                 <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                 <Navbar.Collapse id="responsive-navbar-nav">
