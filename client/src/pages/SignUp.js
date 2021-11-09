@@ -1,32 +1,23 @@
 import { useState } from "react";
-import { Avatar, Grid, CssBaseline, Button, Box, FormControl, FilledInput, InputLabel, FormHelperText, InputAdornment, Typography, IconButton, Container } from "@mui/material";
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import { Avatar, Button, CssBaseline,  InputAdornment, FormControl, InputLabel, FilledInput, FormHelperText, IconButton, Grid, Box, Typography, Container } from '@mui/material';
+import LockOutlinedIcon from '@mui/icons-material/LockClockOutlined';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
-import { USER_LOGGEDIN } from '../storage/actiontype';
-import { userStore } from '../storage/store';
-import { Link } from "react-router-dom";
-
-function Copyright(props) {
-    return (
-        <Typography variant="body2" color="text.secondary" align="center" {...props}>
-            {'Copyright © '}
-            <Link color="inherit" href="https://mui.com/">
-                Your Website
-            </Link>{' '}
-            {new Date().getFullYear()}
-            {'.'}
-        </Typography>
-    );
-}
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { Link } from 'react-router-dom';
 
 const theme = createTheme();
 
-const LogIn = () => {
+const SignUp = () => {
+
     //user value from the form
     const [user, setUsername] = useState("");
-    //warning when the user tries to input worng user patterns
+    //warning when the user tries to input wrong user patterns
     const [userWarning, setUserWarning] = useState("");
+
+    //email value from the form
+    const [email, setEmail] = useState("");
+    //warning when the user tries to input wrong email patterns
+    const [emailWarning, setEmailWarning] = useState("");
 
     //pwd value from the form
     const [pwd, setPwd] = useState("");
@@ -44,6 +35,7 @@ const LogIn = () => {
         //get the value attribute of the target that created event e
         const value = e.target.value;
         const pattern = /^[0-9a-zA-Z]*$/;
+        const emailpattern = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
         //check for the username
         if (e.target.name === "username") {
@@ -61,6 +53,23 @@ const LogIn = () => {
             //set the username
             setUsername(e.target.value);
         }
+
+        if (e.target.name === "email") {
+            //check whether its empty or not and set the warning
+            if (value === "") {
+                setEmail("");
+                setEmailWarning("Email is required.");
+                return false;
+            }
+            //check whether it matches the pattern or not
+            if (!emailpattern.test(value)) {
+                setEmailWarning("Email is invalid.");
+                return false;
+            }
+            //set the username
+            setEmail(e.target.value);
+        }
+
         if (e.target.name === "password") {
             //check whether its empty or not and set the warning
             if (value === "") {
@@ -79,99 +88,6 @@ const LogIn = () => {
         return true;
     }
 
-    function loginuser() {
-        //clear every warnings
-        setUserWarning("");
-        setPwdWarning("");
-
-        //check if the user and pwd is empty or not
-        if (user === "" || pwd === "") {
-            if (user === "") {
-                setUserWarning("username is required.");
-            }
-            if (pwd === "") {
-                setPwdWarning("password is required.");
-            }
-            return;
-        }
-
-        //size constraint for the user and pwd
-        if ((user.length < 8 || user.length > 30) && (pwd.length < 10 || pwd.length > 30)) {
-            setUserWarning("Username must be 8 to 30 letters long.");
-            setPwdWarning("Password must be 10 to 30 letters long.");
-            return false;
-        }
-
-        if (user.length < 8 || user.length > 30) {
-            setUserWarning("Username must be 8 to 30 letters long.");
-            return false;
-        }
-
-        if (pwd.length < 10 || pwd.length > 30) {
-            setPwdWarning("Password must be least 10 to 30 letters long.");
-            return false;
-        }
-
-        const pattern = /^[0-9a-zA-Z]*$/;
-
-        //check whether values matches the pattern or not
-        if (!pattern.test(user) || !pattern.test(pwd)) {
-            if (!pattern.test(user) && !pattern.test(pwd)) {
-                setUserWarning("Username must be alphanumerical.");
-                setPwdWarning("Password must be alphanumerical.");
-                return false;
-            }
-            if (!pattern.test(user)) {
-                setUserWarning("Username must be alphanumerical.");
-                return false;
-            }
-
-            if (!pattern.test(pwd)) {
-                setPwdWarning("Password must be alphanumerical.");
-                return false;
-            }
-        }
-
-        //fetch data from the users database using fetch API
-        fetch('http://localhost:4000/login', {
-            method: 'POST',
-            headers: {
-                'Access-Control-Allow-Origin': '*',
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ user, pwd })
-        })
-            .then(response => {
-                //check the response
-                if (response.status === 500) {
-                    return undefined;
-                }
-                return response.json();
-            })
-            .then(data => {
-                //on successful response update the Global Storage using dispatch
-                setPwd("");
-                setUsername("");
-                if (data === undefined) {
-                    //if the the credentials are wrong then clear the fields and throw warning
-                    setUserWarning("Username is Invalid.");
-                    setPwdWarning("Password is Invalid.");
-                } else {
-                    //dispatch the action to logIn user to global state of the app
-                    userStore.dispatch({
-                        type: USER_LOGGEDIN,
-                        payload: {
-                            username: data.username,
-                            password: data.password
-                        }
-                    });
-                    //set the cookie or set the local storage to keep user loggedIn during refresh
-                    window.localStorage.setItem("user", JSON.stringify(userStore.getState().loggedInUser));
-                    console.log('loggedin');
-                }
-            });
-    }
-
     return (
         <ThemeProvider theme={theme}>
             <Container component="main" maxWidth="xs">
@@ -188,7 +104,7 @@ const LogIn = () => {
                         <LockOutlinedIcon />
                     </Avatar>
                     <Typography component="h1" variant="h5">
-                        Log-In
+                        Sign up
                     </Typography>
                     <Box component="div" sx={{ mt: 1 }}>
                         <Grid container spacing={2} style={{ marginBottom: '10px' }}>
@@ -210,6 +126,26 @@ const LogIn = () => {
                                         aria-describedby="my-helper-text-user"
                                     />
                                     <FormHelperText id="my-helper-text-user" error={userWarning !== ""}>{userWarning}</FormHelperText>
+                                </FormControl>
+                            </Grid>
+                            <Grid item xs={12}>
+                                <FormControl
+                                    variant="filled"
+                                    fullWidth
+                                >
+                                    <InputLabel htmlFor="email" error={emailWarning !== ""}>Email</InputLabel>
+                                    <FilledInput
+                                        autoFocus
+                                        type="email"
+                                        id="email"
+                                        label="Email Address"
+                                        name="email"
+                                        onChange={handleChange}
+                                        value={email}
+                                        error={emailWarning !== ""}
+                                        aria-describedby="my-helper-text-email"
+                                    />
+                                    <FormHelperText id="my-helper-text-email" error={emailWarning !== ""}>{emailWarning}</FormHelperText>
                                 </FormControl>
                             </Grid>
                             <Grid item xs={12}>
@@ -247,32 +183,29 @@ const LogIn = () => {
                                     type="submit"
                                     fullWidth
                                     variant="contained"
-                                    onClick={loginuser}
                                     style={{ backgroundColor: "#E35A5C", color: "#FFFFFF" }}
                                 >
-                                    Submit
+                                    Sign Up
                                 </Button>
                             </Grid>
                         </Grid>
-                        
-                        <Grid container direction="column" justify="center" alignItems="center" spacing={2} xs={12}>
-                            <Grid item xs={12}>
-                                <Link to="/ForgotPassword">
-                                    Forgot Password
+                        <Grid container direction="column" justify="center" alignItems="center" xs={12} spacing={2}>
+                            <Grid item>
+                                <Link to="/LogIn">
+                                    Already have an account?
                                 </Link>
                             </Grid>
-                            <Grid item xs={12}>
-                                <Link to="/SignUp" >
-                                    Don't have an account?
+                            <Grid item>
+                                <Link to="/ForgotPassword">
+                                    Forgot Password
                                 </Link>
                             </Grid>
                         </Grid>
                     </Box>
                 </Box>
-                <Copyright sx={{ mt: 8, mb: 4 }} />
             </Container>
         </ThemeProvider>
     );
 }
 
-export default LogIn;
+export default SignUp;
