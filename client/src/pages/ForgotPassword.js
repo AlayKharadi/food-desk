@@ -5,19 +5,6 @@ import VpnKeyIcon from '@mui/icons-material/VpnKey';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { Link } from "react-router-dom";
 
-function Copyright(props) {
-    return (
-        <Typography variant="body2" color="text.secondary" align="center" {...props}>
-            {'Copyright © '}
-            <Link color="inherit" href="https://mui.com/">
-                Your Website
-            </Link>{' '}
-            {new Date().getFullYear()}
-            {'.'}
-        </Typography>
-    );
-}
-
 const theme = createTheme();
 
 const ForgotPassword = () => {
@@ -131,8 +118,8 @@ const ForgotPassword = () => {
             return;
         }
         //code for changing password
-        fetch('http://localhost:4000/changepwd', {
-            method: 'POST',
+        fetch('http://localhost:4000/API/changepwd', {
+            method: 'PUT',
             headers: {
                 'Access-Control-Allow-Origin': '*',
                 'Content-Type': 'application/json',
@@ -282,7 +269,6 @@ const ForgotPassword = () => {
                         </Grid>
                     </Box>
                 </Box>
-                <Copyright sx={{ mt: 8, mb: 4 }} />
             </Container>
         </ThemeProvider >
     );
