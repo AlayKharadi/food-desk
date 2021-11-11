@@ -41,7 +41,7 @@ const App = () => {
 					{status ? <Redirect to={navlinks[0].path} /> : <ForgotPassword />}
 				</Route>
 				<Route exact path="/SignUp">
-					{status ? <Redirect to={navlinks[0].path} /> : <SignUp />}d
+					{status ? <Redirect to={navlinks[0].path} /> : <SignUp />}
 				</Route>
 				<Route>
 					<Redirect to='/NotFound' />
