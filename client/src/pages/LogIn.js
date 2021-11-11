@@ -7,155 +7,181 @@ import { USER_LOGGEDIN } from '../storage/actiontype';
 import { userStore } from '../storage/store';
 import { Link } from "react-router-dom";
 
-function Copyright(props) {
-    return (
-        <Typography variant="body2" color="text.secondary" align="center" {...props}>
-            {'Copyright © '}
-            <Link color="inherit" href="https://mui.com/">
-                Your Website
-            </Link>{' '}
-            {new Date().getFullYear()}
-            {'.'}
-        </Typography>
-    );
-}
-
 const theme = createTheme();
 
 const LogIn = () => {
-    //user value from the form
-    const [user, setUsername] = useState("");
-    //warning when the user tries to input worng user patterns
-    const [userWarning, setUserWarning] = useState("");
-
-    //pwd value from the form
-    const [pwd, setPwd] = useState("");
-    //warning when the user tries to input wrong password patterns
-    const [pwdWarning, setPwdWarning] = useState("");
+    const [cred, setCred] = useState({
+        user: {
+            value: "",
+            warning: ""
+        },
+        pwd: {
+            value: "",
+            warning: ""
+        }
+    });
 
     const [showPassword, setshowPassword] = useState(false);
 
     //checks the user input on every change in form fields
     function handleChange(e) {
-        //clear every warnings
-        setUserWarning("");
-        setPwdWarning("");
-
-        //get the value attribute of the target that created event e
-        const value = e.target.value;
+        e.preventDefault();
         const pattern = /^[0-9a-zA-Z]*$/;
+        //clear every warnings
+        setCred({
+            ...cred,
+            user: {
+                ...cred.user,
+                warning: ""
+            },
+            pwd: {
+                ...cred.pwd,
+                warning: ""
+            }
+        });
 
         //check for the username
         if (e.target.name === "username") {
             //check whether its empty or not and set the warning
-            if (value === "") {
-                setUsername("");
-                setUserWarning("Username is required.");
-                return false;
+            if (e.target.value === "") {
+                setCred({
+                    ...cred,
+                    user: {
+                        ...cred.user,
+                        value: "",
+                        warning: "Username is required."
+                    }
+                });
+            } else {
+                //check whether it matches the pattern or not
+                if (!pattern.test(e.target.value)) {
+                    setCred({
+                        ...cred,
+                        user: {
+                            ...cred.user,
+                            warning: "Username must be alphanumerical."
+                        }
+                    });
+                } else {
+                    //set the username
+                    setCred({
+                        ...cred,
+                        user: {
+                            ...cred.user,
+                            value: e.target.value,
+                            warning: ""
+                        }
+                    });
+                }
             }
-            //check whether it matches the pattern or not
-            if (!pattern.test(value)) {
-                setUserWarning("Username must be alphanumerical.");
-                return false;
-            }
-            //set the username
-            setUsername(e.target.value);
         }
         if (e.target.name === "password") {
             //check whether its empty or not and set the warning
-            if (value === "") {
-                setPwd("");
-                setPwdWarning("Password is required.");
-                return false;
+            if (e.target.value === "") {
+                setCred({
+                    ...cred,
+                    pwd: {
+                        ...cred.pwd,
+                        value: "",
+                        warning: "Password is required."
+                    }
+                });
+            } else {
+            
+                //check whether it matches the pattern or not
+                if (!pattern.test(e.target.value)) {
+                    setCred({
+                        ...cred,
+                        pwd: {
+                            ...cred.pwd,
+                            warning: "Password must be alphanumerical."
+                        }
+                    });
+                } else {
+                    //set the password
+                    setCred({
+                        ...cred,
+                        pwd: {
+                            ...cred.pwd,
+                            value: e.target.value,
+                            warning: ""
+                        }
+                    });
+                }
             }
-            //check whether it matches the pattern or not
-            if (!pattern.test(value)) {
-                setPwdWarning("Password must be alphanumerical.");
-                return false;
-            }
-            //set the password
-            setPwd(e.target.value);
         }
-        return true;
     }
 
-    function loginuser() {
+    function loginuser(e) {
+        e.preventDefault();
         //clear every warnings
-        setUserWarning("");
-        setPwdWarning("");
-
-        //check if the user and pwd is empty or not
-        if (user === "" || pwd === "") {
-            if (user === "") {
-                setUserWarning("username is required.");
+        if ((cred.user.value.length < 8) || (cred.user.value.length > 30) || (cred.pwd.value.length < 10) || (cred.pwd.value.length > 30)) {
+            //check for the errors
+            const warning = {
+                user: "",
+                pwd: ""
             }
-            if (pwd === "") {
-                setPwdWarning("password is required.");
+            if ((cred.user.value.length < 8) || (cred.user.value.length > 30)) {
+                warning.user = (cred.user.value === "") ? "Username is required." : "Username must be 8 to 30 letters long."
             }
-            return;
-        }
-
-        //size constraint for the user and pwd
-        if ((user.length < 8 || user.length > 30) && (pwd.length < 10 || pwd.length > 30)) {
-            setUserWarning("Username must be 8 to 30 letters long.");
-            setPwdWarning("Password must be 10 to 30 letters long.");
-            return false;
-        }
-
-        if (user.length < 8 || user.length > 30) {
-            setUserWarning("Username must be 8 to 30 letters long.");
-            return false;
-        }
-
-        if (pwd.length < 10 || pwd.length > 30) {
-            setPwdWarning("Password must be least 10 to 30 letters long.");
-            return false;
-        }
-
-        const pattern = /^[0-9a-zA-Z]*$/;
-
-        //check whether values matches the pattern or not
-        if (!pattern.test(user) || !pattern.test(pwd)) {
-            if (!pattern.test(user) && !pattern.test(pwd)) {
-                setUserWarning("Username must be alphanumerical.");
-                setPwdWarning("Password must be alphanumerical.");
-                return false;
+            if ((cred.pwd.value.length < 10) || (cred.pwd.value.length > 30)) {
+                warning.pwd = (cred.pwd.value === "") ? "password is required." : "Password must be 10 to 30 letters long."
             }
-            if (!pattern.test(user)) {
-                setUserWarning("Username must be alphanumerical.");
-                return false;
-            }
-
-            if (!pattern.test(pwd)) {
-                setPwdWarning("Password must be alphanumerical.");
-                return false;
-            }
-        }
-
-        //fetch data from the users database using fetch API
-        fetch('http://localhost:4000/login', {
-            method: 'POST',
-            headers: {
-                'Access-Control-Allow-Origin': '*',
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ user, pwd })
-        })
-            .then(response => {
+            setCred({
+                ...cred,
+                user: {
+                    ...cred.user,
+                    warning: warning.user
+                },
+                pwd: {
+                    ...cred.pwd,
+                    warning: warning.pwd
+                }
+            });
+        } else {
+            //fetch data from the users database using fetch API
+            fetch('http://localhost:4000/API/login', {
+                method: 'POST',
+                headers: {
+                    'Access-Control-Allow-Origin': '*',
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    user: cred.user.value,
+                    pwd: cred.pwd.value
+                })
+            }).then(response => {
                 //check the response
                 if (response.status === 500) {
                     return undefined;
                 }
                 return response.json();
-            })
-            .then(data => {
+            }).then(data => {
                 //on successful response update the Global Storage using dispatch
-                setPwd("");
-                setUsername("");
+                setCred({
+                    ...cred,
+                    user: {
+                        ...cred.user,
+                        value: ""
+                    },
+                    pwd: {
+                        ...cred.pwd,
+                        value: ""
+                    }
+                });
                 if (data === undefined) {
                     //if the the credentials are wrong then clear the fields and throw warning
-                    setUserWarning("Username is Invalid.");
-                    setPwdWarning("Password is Invalid.");
+                    setCred({
+                        ...cred,
+                        user: {
+                            ...cred.user,
+                            warning: "Username is Invalid."
+                        },
+                        pwd: {
+                            ...cred.pwd,
+                            warning: "Password is Invalid."
+                        }
+                    });
                 } else {
                     //dispatch the action to logIn user to global state of the app
                     userStore.dispatch({
@@ -167,9 +193,9 @@ const LogIn = () => {
                     });
                     //set the cookie or set the local storage to keep user loggedIn during refresh
                     window.localStorage.setItem("user", JSON.stringify(userStore.getState().loggedInUser));
-                    console.log('loggedin');
                 }
             });
+        }
     }
 
     return (
@@ -197,19 +223,19 @@ const LogIn = () => {
                                     variant="filled"
                                     fullWidth
                                 >
-                                    <InputLabel htmlFor="username" error={userWarning !== ""}>Username</InputLabel>
+                                    <InputLabel htmlFor="username" error={cred.user.warning !== ""}>Username</InputLabel>
                                     <FilledInput
                                         autoFocus
                                         type="text"
                                         id="username"
                                         label="username"
                                         name="username"
-                                        onChange={handleChange}
-                                        value={user}
-                                        error={userWarning !== ""}
+                                        onChange={(event) => handleChange(event)}
+                                        value={cred.user.value}
+                                        error={cred.user.warning !== ""}
                                         aria-describedby="my-helper-text-user"
                                     />
-                                    <FormHelperText id="my-helper-text-user" error={userWarning !== ""}>{userWarning}</FormHelperText>
+                                    <FormHelperText id="my-helper-text-user" error={cred.user.warning !== ""}>{cred.user.warning}</FormHelperText>
                                 </FormControl>
                             </Grid>
                             <Grid item xs={12}>
@@ -217,15 +243,15 @@ const LogIn = () => {
                                     variant="filled"
                                     fullWidth
                                 >
-                                    <InputLabel htmlFor="password" error={pwdWarning !== ""}>Password</InputLabel>
+                                    <InputLabel htmlFor="password" error={cred.pwd.warning !== ""}>Password</InputLabel>
                                     <FilledInput
                                         id="password"
                                         name="password"
                                         label="Password"
                                         type={showPassword ? "text" : "password"}
-                                        value={pwd}
-                                        onChange={handleChange}
-                                        error={pwdWarning !== ""}
+                                        value={cred.pwd.value}
+                                        onChange={(event) => handleChange(event)}
+                                        error={cred.pwd.warning !== ""}
                                         aria-describedby="my-helper-text-pwd"
                                         endAdornment={
                                             <InputAdornment position="end">
@@ -239,7 +265,7 @@ const LogIn = () => {
                                             </InputAdornment>
                                         }
                                     />
-                                    <FormHelperText id="my-helper-text-pwd" error={pwdWarning !== ""}>{pwdWarning}</FormHelperText>
+                                    <FormHelperText id="my-helper-text-pwd" error={cred.pwd.warning !== ""}>{cred.pwd.warning}</FormHelperText>
                                 </FormControl>
                             </Grid>
                             <Grid item xs={12}>
@@ -247,15 +273,15 @@ const LogIn = () => {
                                     type="submit"
                                     fullWidth
                                     variant="contained"
-                                    onClick={loginuser}
+                                    onClick={(event) => loginuser(event)}
                                     style={{ backgroundColor: "#E35A5C", color: "#FFFFFF" }}
                                 >
                                     Submit
                                 </Button>
                             </Grid>
                         </Grid>
-                        
-                        <Grid container direction="column" justify="center" alignItems="center" spacing={2} xs={12}>
+
+                        <Grid container direction="column" justify="center" alignItems="center" spacing={2}>
                             <Grid item xs={12}>
                                 <Link to="/ForgotPassword">
                                     Forgot Password
@@ -269,7 +295,6 @@ const LogIn = () => {
                         </Grid>
                     </Box>
                 </Box>
-                <Copyright sx={{ mt: 8, mb: 4 }} />
             </Container>
         </ThemeProvider>
     );
