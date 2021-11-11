@@ -26,6 +26,7 @@ const LogIn = () => {
     //checks the user input on every change in form fields
     function handleChange(e) {
         e.preventDefault();
+        const pattern = /^[0-9a-zA-Z]*$/;
         //clear every warnings
         setCred({
             ...cred,
@@ -38,8 +39,6 @@ const LogIn = () => {
                 warning: ""
             }
         });
-
-        const pattern = /^[0-9a-zA-Z]*$/;
 
         //check for the username
         if (e.target.name === "username") {
@@ -53,28 +52,28 @@ const LogIn = () => {
                         warning: "Username is required."
                     }
                 });
-                return false;
-            }
-            //check whether it matches the pattern or not
-            if (!pattern.test(e.target.value)) {
-                setCred({
-                    ...cred,
-                    user: {
-                        ...cred.user,
-                        warning: "Username must be alphanumerical."
-                    }
-                });
-                return false;
-            }
-            //set the username
-            setCred({
-                ...cred,
-                user: {
-                    ...cred.user,
-                    value: e.target.value,
-                    warning: ""
+            } else {
+                //check whether it matches the pattern or not
+                if (!pattern.test(e.target.value)) {
+                    setCred({
+                        ...cred,
+                        user: {
+                            ...cred.user,
+                            warning: "Username must be alphanumerical."
+                        }
+                    });
+                } else {
+                    //set the username
+                    setCred({
+                        ...cred,
+                        user: {
+                            ...cred.user,
+                            value: e.target.value,
+                            warning: ""
+                        }
+                    });
                 }
-            });
+            }
         }
         if (e.target.name === "password") {
             //check whether its empty or not and set the warning
@@ -87,192 +86,77 @@ const LogIn = () => {
                         warning: "Password is required."
                     }
                 });
-                return false;
-            }
-            //check whether it matches the pattern or not
-            if (!pattern.test(e.target.value)) {
-                setCred({
-                    ...cred,
-                    pwd: {
-                        ...cred.pwd,
-                        warning: "Password must be alphanumerical."
-                    }
-                });
-                return false;
-            }
-            //set the password
-            setCred({
-                ...cred,
-                pwd: {
-                    ...cred.user,
-                    value: e.target.value,
-                    warning: ""
+            } else {
+            
+                //check whether it matches the pattern or not
+                if (!pattern.test(e.target.value)) {
+                    setCred({
+                        ...cred,
+                        pwd: {
+                            ...cred.pwd,
+                            warning: "Password must be alphanumerical."
+                        }
+                    });
+                } else {
+                    //set the password
+                    setCred({
+                        ...cred,
+                        pwd: {
+                            ...cred.pwd,
+                            value: e.target.value,
+                            warning: ""
+                        }
+                    });
                 }
-            });
+            }
         }
-        return true;
     }
 
-    function loginuser() {
+    function loginuser(e) {
+        e.preventDefault();
         //clear every warnings
-        setCred({
-            ...cred,
-            user: {
-                ...cred.user,
-                warning: ""
-            },
-            pwd: {
-                ...cred.pwd,
-                warning: ""
+        if ((cred.user.value.length < 8) || (cred.user.value.length > 30) || (cred.pwd.value.length < 10) || (cred.pwd.value.length > 30)) {
+            //check for the errors
+            const warning = {
+                user: "",
+                pwd: ""
             }
-        });
-
-        //check if the user and pwd is empty or not
-        if (cred.user.value === "" || cred.pwd.value === "") {
-            if (cred.user.value === "") {
-                setCred({
-                    ...cred,
-                    user: {
-                        ...cred.user,
-                        warning: "username is required."
-                    },
-                    pwd: {
-                        ...cred.pwd,
-                        warning: ""
-                    }
-                });
+            if ((cred.user.value.length < 8) || (cred.user.value.length > 30)) {
+                warning.user = (cred.user.value === "") ? "Username is required." : "Username must be 8 to 30 letters long."
             }
-            if (cred.pwd.value === "") {
-                setCred({
-                    ...cred,
-                    user: {
-                        ...cred.user,
-                        warning: ""
-                    },
-                    pwd: {
-                        ...cred.pwd,
-                        warning: "password is required."
-                    }
-                });
+            if ((cred.pwd.value.length < 10) || (cred.pwd.value.length > 30)) {
+                warning.pwd = (cred.pwd.value === "") ? "password is required." : "Password must be 10 to 30 letters long."
             }
-            return;
-        }
-
-        //size constraint for the user and pwd
-        if ((cred.user.value.length < 8 || cred.user.value.length > 30) && (cred.pwd.value.length < 10 || cred.pwd.value.length > 30)) {
             setCred({
                 ...cred,
                 user: {
                     ...cred.user,
-                    warning: "Username must be 8 to 30 letters long."
+                    warning: warning.user
                 },
                 pwd: {
                     ...cred.pwd,
-                    warning: "Password must be 10 to 30 letters long."
+                    warning: warning.pwd
                 }
             });
-            return false;
-        }
-
-        if (cred.user.value.length < 8 || cred.user.value.length > 30) {
-            setCred({
-                ...cred,
-                user: {
-                    ...cred.user,
-                    warning: "Username must be 8 to 30 letters long."
+        } else {
+            //fetch data from the users database using fetch API
+            fetch('http://localhost:4000/API/login', {
+                method: 'POST',
+                headers: {
+                    'Access-Control-Allow-Origin': '*',
+                    'Content-Type': 'application/json',
                 },
-                pwd: {
-                    ...cred.pwd,
-                    warning: ""
-                }
-            });
-            return false;
-        }
-
-        if (cred.pwd.value.length < 10 || cred.pwd.value.length > 30) {
-            setCred({
-                ...cred,
-                user: {
-                    ...cred.user,
-                    warning: ""
-                },
-                pwd: {
-                    ...cred.pwd,
-                    warning: "Password must be least 10 to 30 letters long."
-                }
-            });
-            return false;
-        }
-
-        const pattern = /^[0-9a-zA-Z]*$/;
-
-        //check whether values matches the pattern or not
-        if (!pattern.test(cred.user.value) || !pattern.test(cred.pwd.value)) {
-            if (!pattern.test(cred.user.value) && !pattern.test(cred.pwd.value)) {
-                setCred({
-                    ...cred,
-                    user: {
-                        ...cred.user,
-                        warning: "Username must be alphanumerical."
-                    },
-                    pwd: {
-                        ...cred.pwd,
-                        warning: "Password must be alphanumerical."
-                    }
-                });
-                return false;
-            }
-            if (!pattern.test(cred.user.value)) {
-                setCred({
-                    ...cred,
-                    user: {
-                        ...cred.user,
-                        warning: "Username must be alphanumerical."
-                    },
-                    pwd: {
-                        ...cred.pwd,
-                        warning: ""
-                    }
-                });
-                return false;
-            }
-
-            if (!pattern.test(cred.pwd.value)) {
-                setCred({
-                    ...cred,
-                    user: {
-                        ...cred.user,
-                        warning: ""
-                    },
-                    pwd: {
-                        ...cred.pwd,
-                        warning: "Password must be alphanumerical."
-                    }
-                });
-                return false;
-            }
-        }
-
-        //fetch data from the users database using fetch API
-        fetch('http://localhost:4000/API/login', {
-            method: 'POST',
-            headers: {
-                'Access-Control-Allow-Origin': '*',
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                user: cred.user.value,
-                pwd: cred.pwd.value
-            })
-        })
-            .then(response => {
+                body: JSON.stringify({
+                    user: cred.user.value,
+                    pwd: cred.pwd.value
+                })
+            }).then(response => {
                 //check the response
                 if (response.status === 500) {
                     return undefined;
                 }
                 return response.json();
-            })
-            .then(data => {
+            }).then(data => {
                 //on successful response update the Global Storage using dispatch
                 setCred({
                     ...cred,
@@ -311,6 +195,7 @@ const LogIn = () => {
                     window.localStorage.setItem("user", JSON.stringify(userStore.getState().loggedInUser));
                 }
             });
+        }
     }
 
     return (
@@ -345,7 +230,7 @@ const LogIn = () => {
                                         id="username"
                                         label="username"
                                         name="username"
-                                        onChange={handleChange}
+                                        onChange={(event) => handleChange(event)}
                                         value={cred.user.value}
                                         error={cred.user.warning !== ""}
                                         aria-describedby="my-helper-text-user"
@@ -365,7 +250,7 @@ const LogIn = () => {
                                         label="Password"
                                         type={showPassword ? "text" : "password"}
                                         value={cred.pwd.value}
-                                        onChange={handleChange}
+                                        onChange={(event) => handleChange(event)}
                                         error={cred.pwd.warning !== ""}
                                         aria-describedby="my-helper-text-pwd"
                                         endAdornment={
@@ -388,14 +273,14 @@ const LogIn = () => {
                                     type="submit"
                                     fullWidth
                                     variant="contained"
-                                    onClick={loginuser}
+                                    onClick={(event) => loginuser(event)}
                                     style={{ backgroundColor: "#E35A5C", color: "#FFFFFF" }}
                                 >
                                     Submit
                                 </Button>
                             </Grid>
                         </Grid>
-                        
+
                         <Grid container direction="column" justify="center" alignItems="center" spacing={2}>
                             <Grid item xs={12}>
                                 <Link to="/ForgotPassword">
