@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { useSelector } from "react-redux";
 import CustomNavbar from "./components/CustomNavbar";
 import NotFound from "./pages/NotFound";
+import HomePage from "./pages/Homepage";
 import LogIn from "./pages/LogIn";
 import ForgotPassword from "./pages/ForgotPassword";
 import SignUp from "./pages/SignUp";
@@ -29,13 +30,16 @@ const App = () => {
 					navlinks.map((navlink) => {
 						return (
 							<Route exact path={navlink.path} key={navlink.id}>
-								{ status ? navlink.target : <Redirect exact from={navlink.path} to='/LogIn' />}
+								{ status ? navlink.target : <Redirect exact from={navlink.path} to='/HomePage' />}
 							</Route>
 						)
 					})
 				}
 				<Route exact path="/LogIn">
 					{ status ? <Redirect to={navlinks[0].path} /> : <LogIn />}
+				</Route>
+				<Route exact path="/HomePage">
+					{ status ? <Redirect to={navlinks[0].path} /> : <HomePage />}
 				</Route>
 				<Route exact path="/ForgotPassword">
 					{status ? <Redirect to={navlinks[0].path} /> : <ForgotPassword />}
