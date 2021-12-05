@@ -1,11 +1,7 @@
-const login = require('./routes/login');
-const changepwd = require('./routes/changepwd');
-const signup = require('./routes/signup');
-const sendotp = require('./routes/sendotp');
-
-module.exports = {
-    login,
-    changepwd,
-    signup,
-    sendotp
+module.exports = (app) => {
+    app.use('/API', require('./routes/login'));
+    app.use('/API', require('./routes/changepwd'));
+    app.use('/API', require('./routes/signup'));
+    app.use('/API', require('./routes/sendotp'));
+    app.use('/API', require('./routes/menu'));
 };
