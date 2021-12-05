@@ -1,20 +1,17 @@
 const express = require('express');
 const cors = require('cors');
 const app = express();
-const PORT = process.env.PORT || 4000;
+const PORT = 4000;
 const corsOptions = {
-    origin: '*',
+    origin: "*",
     credentials: true,
-    optionSuccessStatus: 200,
+    optionsSuccessStatus: 200
 }
 app.use(cors(corsOptions));
 app.use(express.json());
 
 const routes = require('./routes');
-app.use('/API', routes.login);
-app.use('/API', routes.changepwd);
-app.use('/API', routes.sendotp);
-app.use('/API', routes.signup);
+routes(app);
 
 app.get('*', (req, res) => {
     res.send('Sorry, this is an invalid URL.');
