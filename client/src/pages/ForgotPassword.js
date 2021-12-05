@@ -237,7 +237,7 @@ const ForgotPassword = () => {
             });
         } else {
             //code for changing password
-            fetch('http://localhost:4000/API/sendotp', {
+            fetch('/API/sendotp', {
                 method: 'POST',
                 headers: {
                     'Access-Control-Allow-Origin': '*',
@@ -291,7 +291,7 @@ const ForgotPassword = () => {
         if ((otp.new !== "") && pattern.test(otp.new)) {
             if (otp.new === otp.confirm) {
                 //code for changing password
-                fetch('http://localhost:4000/API/changepwd', {
+                fetch('/API/changepwd', {
                     method: 'PUT',
                     headers: {
                         'Access-Control-Allow-Origin': '*',
@@ -542,15 +542,20 @@ const ForgotPassword = () => {
                                     </Button>
                                 </Grid>
                             </Grid>
-                            <Grid container direction="column" justify="center" alignItems="center" spacing={2} >
-                                <Grid item xs>
-                                    <Link to="/LogIn">
+                            <Grid container direction="column" justify="center" alignItems="center" >
+                                <Grid item xs={12}>
+                                    <Link className="nav-link" to="/LogIn">
                                         Already have an account?
                                     </Link>
                                 </Grid>
-                                <Grid item>
-                                    <Link to="/SignUp" >
+                                <Grid item xs={12}>
+                                    <Link className="nav-link" to="/SignUp" >
                                         Don't have an account?
+                                    </Link>
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <Link className="nav-link" to="/Home">
+                                        Go back to Home
                                     </Link>
                                 </Grid>
                             </Grid>
