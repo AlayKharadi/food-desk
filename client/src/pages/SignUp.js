@@ -197,7 +197,7 @@ const SignUp = () => {
             });
         } else {
             fetch(
-                'http://localhost:4000/API/sendotp', {
+                '/API/sendotp', {
                 method: 'POST',
                 headers: {
                     'Access-Control-Allow-Origin': '*',
@@ -230,7 +230,7 @@ const SignUp = () => {
                             warning: "Something went wrong with mail."
                         }
                     });
-                    window.alert("Password change unsuccessful.");
+                    window.alert("Signup unsuccessful.");
                 } else {
                     setOTP({
                         ...otp,
@@ -248,7 +248,7 @@ const SignUp = () => {
         if ((otp.new !== "") && (pattern.test(otp.new))) {
             if (otp.new === otp.confirm) {
                 console.log('cred', cred);
-                fetch('http://localhost:4000/API/signup', {
+                fetch('/API/signup', {
                     method: 'POST',
                     headers: {
                         'Access-Control-Allow-Origin': '*',
@@ -474,15 +474,20 @@ const SignUp = () => {
                                     </Button>
                                 </Grid>
                             </Grid>
-                            <Grid container direction="column" justify="center" alignItems="center" spacing={2}>
-                                <Grid item>
-                                    <Link to="/LogIn">
+                            <Grid container direction="column" justify="center" alignItems="center">
+                                <Grid item xs={12}>
+                                    <Link className="nav-link" to="/LogIn">
                                         Already have an account?
                                     </Link>
                                 </Grid>
-                                <Grid item>
-                                    <Link to="/ForgotPassword">
+                                <Grid item xs={12}>
+                                    <Link className="nav-link" to="/ForgotPassword">
                                         Forgot Password
+                                    </Link>
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <Link className="nav-link" to="/Home">
+                                        Go back to Home
                                     </Link>
                                 </Grid>
                             </Grid>
