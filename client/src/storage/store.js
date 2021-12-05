@@ -5,8 +5,10 @@ import reducer from './reducer';
 let initialuserStore = {
     loggedInUser: {
         username: null,
-        password: null
+        password: null,
+        usertype: 1
     },
+    cart: []
 };
 
 //retrieve the user from the local storage
@@ -20,7 +22,8 @@ if (user) {
         {
             ...initialuserStore.loggedInUser,
             username: user.username,
-            password: user.password
+            password: user.password,
+            usertype: user.usertype
         }
     };
 }
