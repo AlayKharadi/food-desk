@@ -1,46 +1,89 @@
-import * as React from 'react';
-import { Button, Card, CardActions, CardContent, CardMedia, CssBaseline, Grid, Typography, Container } from '@mui/material';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-
-const cards = [1, 2, 3, 4, 5, 6, 7, 8, 9];
-
-const theme = createTheme();
+import { Button, Container, Divider, Grid, Typography } from '@mui/material';
+import { useEffect, useState } from 'react';
+import AddItem from '../components/AddItem';
+import Item from '../components/Item';
+import MenuBookIcon from '@mui/icons-material/MenuBook';
+import { userStore } from '../storage/store';
 
 const Menu = () => {
+
+    const [cards, setCards] = useState([]);
+
+    const [open, setOpen] = useState(false);
+
+    let usertype = userStore.getState().loggedInUser.usertype;
+
+    useEffect(() => {
+        fetch('/API/menu', {
+            method: 'GET',
+            headers: {
+                'Access-Control-Allow-Origin': '*',
+                'Content-Type': 'application/json'
+            }
+        }).then(response => {
+            if (response.status === 500) {
+                return undefined;
+            }
+            return response.json();
+        }).then(data => {
+            if (data === undefined) {
+                setCards([]);
+            } else {
+                setCards(data);
+            }
+        })
+
+        return () => {
+            return;
+        }
+    }, []);
+
     return (
-        <ThemeProvider theme={theme}>
-            <CssBaseline />
-            <Container sx={{ py: 8 }} maxWidth="md">
-                <Grid container spacing={4}>
-                    {cards.map((card) => (
-                        <Grid item key={card} xs={12} sm={6} md={4}>
-                            <Card
-                                sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}
-                            >
-                                <CardMedia
-                                    component="img"
-                                    image="https://source.unsplash.com/random"
-                                    alt="random"
-                                />
-                                <CardContent sx={{ flexGrow: 1 }}>
-                                    <Typography gutterBottom variant="h5" component="h2">
-                                        Heading
-                                    </Typography>
-                                    <Typography>
-                                        This is a media card. You can use this section to describe the
-                                        content.
-                                    </Typography>
-                                </CardContent>
-                                <CardActions>
-                                    <Button size="small">View</Button>
-                                    <Button size="small">Edit</Button>
-                                </CardActions>
-                            </Card>
-                        </Grid>
-                    ))}
+        <Container sx={{ py: 8 }} maxWidth="md">
+            <AddItem opencard={open} setOpenCard={setOpen} />
+            <Grid container spacing={4}>
+                {
+                    (usertype === 2)
+                        &&
+                    (
+                        <>
+                            <Grid item xs={10}>
+                                <Typography component="h5" variant="h4">
+                                    Add To Menu
+                                </Typography>
+                            </Grid>
+                            <Grid item xs={2}>
+                                <Button
+                                    variant="contained"
+                                    color="secondary"
+                                    onClick={(e) => setOpen(true)}
+                                    title="Add-To-Menu"
+                                >
+                                    <MenuBookIcon />
+                                </Button>
+                            </Grid>
+                            <Grid item xs={12}>
+                                <Divider />
+                            </Grid>
+                        </>
+                    )
+                }
+                <Grid item xs={12}>
+                    <Typography component="h5" variant="h4">
+                        Menu Item
+                    </Typography>
                 </Grid>
-            </Container>
-        </ThemeProvider>
+                {
+                    (cards.length > 0)
+                    &&
+                    cards.map((card, key) => (
+                        <Grid item key={key} xs={12} sm={6} md={4}>
+                            <Item food={card} />
+                        </Grid>
+                    ))
+                }
+            </Grid>
+        </Container>
     );
 }
 
