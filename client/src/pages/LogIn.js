@@ -87,7 +87,7 @@ const LogIn = () => {
                     }
                 });
             } else {
-            
+
                 //check whether it matches the pattern or not
                 if (!pattern.test(e.target.value)) {
                     setCred({
@@ -140,7 +140,7 @@ const LogIn = () => {
             });
         } else {
             //fetch data from the users database using fetch API
-            fetch('http://localhost:4000/API/login', {
+            fetch('/API/login', {
                 method: 'POST',
                 headers: {
                     'Access-Control-Allow-Origin': '*',
@@ -188,7 +188,8 @@ const LogIn = () => {
                         type: USER_LOGGEDIN,
                         payload: {
                             username: data.username,
-                            password: data.password
+                            password: data.password,
+                            usertype: data.usertype
                         }
                     });
                     //set the cookie or set the local storage to keep user loggedIn during refresh
@@ -276,20 +277,25 @@ const LogIn = () => {
                                     onClick={(event) => loginuser(event)}
                                     style={{ backgroundColor: "#E35A5C", color: "#FFFFFF" }}
                                 >
-                                    Submit
+                                    LogIn
                                 </Button>
                             </Grid>
                         </Grid>
 
-                        <Grid container direction="column" justify="center" alignItems="center" spacing={2}>
+                        <Grid container direction="column" justify="center" alignItems="center">
                             <Grid item xs={12}>
-                                <Link to="/ForgotPassword">
+                                <Link className="nav-link" to="/ForgotPassword">
                                     Forgot Password
                                 </Link>
                             </Grid>
                             <Grid item xs={12}>
-                                <Link to="/SignUp" >
+                                <Link className="nav-link" to="/SignUp" >
                                     Don't have an account?
+                                </Link>
+                            </Grid>
+                            <Grid item xs={12}>
+                                <Link className="nav-link" to="/Home">
+                                    Go back to Home
                                 </Link>
                             </Grid>
                         </Grid>
