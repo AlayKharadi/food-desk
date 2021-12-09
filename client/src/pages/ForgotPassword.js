@@ -5,6 +5,7 @@ import VpnKeyIcon from '@mui/icons-material/VpnKey';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { Link } from "react-router-dom";
 import { Modal } from "react-bootstrap";
+import { send } from 'emailjs-com';
 
 const theme = createTheme();
 
@@ -179,6 +180,16 @@ const ForgotPassword = () => {
         }
     }
 
+    function generateOTP() {
+        var otp = "";
+        var options = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+        for (var i = 0; i < 10; i++)
+            otp += options.charAt(Math.floor(Math.random() * options.length));
+
+        return otp;
+    }
+
     function changePwd(e) {
         e.preventDefault();
 
@@ -275,11 +286,22 @@ const ForgotPassword = () => {
                     });
                     window.alert("Password change unsuccessful.");
                 } else {
-                    setOTP({
-                        ...otp,
-                        confirm: data.otp
-                    });
-                    setOpen(true);
+                    const templateParams = {
+                        app_name: data.app_name,
+                        user_email: data.email,
+                        to_name: data.username,
+                        otp: generateOTP()
+                    }
+                    send(data.serviceID, data.templateID, templateParams, data.userID)
+                        .then(response => {
+                            setOTP({
+                                ...otp,
+                                confirm: templateParams.otp
+                            });
+                            setOpen(true);
+                        }).catch(error => {
+                            window.alert("Password change unsuccessful.");
+                        });
                 }
             });
         }
@@ -288,6 +310,10 @@ const ForgotPassword = () => {
     function verifyOTP(e) {
         e.preventDefault();
         const pattern = /^[0-9a-zA-Z]{10}$/;
+        setOTP({
+            ...otp,
+            warning: ""
+        })
         if ((otp.new !== "") && pattern.test(otp.new)) {
             if (otp.new === otp.confirm) {
                 //code for changing password
