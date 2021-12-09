@@ -5,6 +5,7 @@ import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { Link } from 'react-router-dom';
 import { Modal } from "react-bootstrap";
+import { send } from 'emailjs-com';
 
 const theme = createTheme();
 
@@ -162,6 +163,16 @@ const SignUp = () => {
         }
     }
 
+    function generateOTP() {
+        var otp = "";
+        var options = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+        for (var i = 0; i < 10; i++)
+            otp += options.charAt(Math.floor(Math.random() * options.length));
+
+        return otp;
+    }
+
     function signupuser(e) {
         e.preventDefault();
         if ((cred.email.value === "") || (cred.user.value.length < 8) || (cred.user.value.length > 30) || (cred.pwd.value.length < 10) || (cred.pwd.value.length > 30)) {
@@ -204,8 +215,7 @@ const SignUp = () => {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    type: "email",
-                    value: cred.email.value
+                    type: "email"
                 })
             }).then(response => {
                 if (response.status === 500) {
@@ -227,16 +237,27 @@ const SignUp = () => {
                         email: {
                             ...cred.email,
                             value: "",
-                            warning: "Something went wrong with mail."
+                            warning: ""
                         }
                     });
                     window.alert("Signup unsuccessful.");
                 } else {
-                    setOTP({
-                        ...otp,
-                        confirm: data.otp
-                    });
-                    setOpen(true);
+                    const templateParams = {
+                        app_name: data.app_name,
+                        user_email: cred.email.value,
+                        to_name: cred.user.value,
+                        otp: generateOTP()
+                    }
+                    send(data.serviceID, data.templateID, templateParams, data.userID)
+                        .then(response => {
+                            setOTP({
+                                ...otp,
+                                confirm: templateParams.otp
+                            });
+                            setOpen(true);
+                        }).catch(error => {
+                            window.alert("SignUp unsuccessful.");
+                        });
                 }
             });
         }
@@ -245,9 +266,12 @@ const SignUp = () => {
     function verifyOTP(e) {
         e.preventDefault();
         const pattern = /^[0-9a-zA-Z]{10}$/;
+        setOTP({
+            ...otp,
+            warning: ""
+        })
         if ((otp.new !== "") && (pattern.test(otp.new))) {
             if (otp.new === otp.confirm) {
-                console.log('cred', cred);
                 fetch('/API/signup', {
                     method: 'POST',
                     headers: {
