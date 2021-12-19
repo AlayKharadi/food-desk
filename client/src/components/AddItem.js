@@ -445,8 +445,7 @@ const AddItem = ({ opencard, setOpenCard }) => {
                             setOpenCard(false);
                         }}
                     >
-                        <CloseIcon
-                        />
+                        <CloseIcon />
                     </Button>
                 </CardActions>
             </Card>
