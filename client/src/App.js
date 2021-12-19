@@ -1,13 +1,28 @@
-import { BrowserRouter, Switch, Route, Redirect } from "react-router-dom";
+import { BrowserRouter, Switch, Route, Redirect, withRouter } from "react-router-dom";
 import { useEffect, useState } from 'react';
 import { useSelector } from "react-redux";
 import CustomNavbar from "./components/CustomNavbar";
 import NotFound from "./pages/NotFound";
 import LogIn from "./pages/LogIn";
-import Home from "./pages/Home";
 import ForgotPassword from "./pages/ForgotPassword";
+import HomePage from "./pages/Homepage";
 import SignUp from "./pages/SignUp";
 import { navlinks } from './storage/Navlinks';
+
+//This is to hide navabar on invalid paths
+function ToggleNavbar(props) {
+	if (window.location.pathname === "/NotFound") {
+		return null;
+	}
+	return (
+		<>
+			{/* Navbar for users */}
+			<CustomNavbar navlinks={props.navlinks} style={{ zIndex: 10 }} />
+		</>
+	);
+}
+
+const HiddenElement = withRouter(ToggleNavbar);
 
 const App = () => {
 
@@ -23,7 +38,7 @@ const App = () => {
 
 	return (
 		<BrowserRouter>
-			{ status && <CustomNavbar navlinks={navlinks} style={{ zIndex: 10 }} />}
+			{status && <HiddenElement navlinks={navlinks} />}
 			<Switch>
 				<Redirect exact from="/" to={navlinks[0].path} />
 				{
@@ -35,11 +50,11 @@ const App = () => {
 						)
 					})
 				}
-				<Route exact path="/Home">
-					{status ? <Redirect to={navlinks[0].path} /> : <Home />}
-				</Route>
 				<Route exact path="/LogIn">
 					{ status ? <Redirect to={navlinks[0].path} /> : <LogIn />}
+				</Route>
+				<Route exact path="/Home">
+					{ status ? <Redirect to={navlinks[0].path} /> : <HomePage />}
 				</Route>
 				<Route exact path="/ForgotPassword">
 					{status ? <Redirect to={navlinks[0].path} /> : <ForgotPassword />}

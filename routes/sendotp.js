@@ -7,7 +7,8 @@ router.post('/sendotp', (req, res) => {
 	let response = {
 		app_name: process.env.APP_NAME,
 		userID: process.env.EMAILJS_USERID,
-		serviceID: process.env.EMAILJS_SERVICEID
+		serviceID: process.env.EMAILJS_SERVICEID,
+		templateID: process.env.TEMPLATE_OTP
 	};
 	if (req.body.type === "user") {
 		pool.query(`SELECT username, email FROM users WHERE username = '${req.body.value}';`, (error, results) => {
@@ -18,8 +19,7 @@ router.post('/sendotp', (req, res) => {
 				response = {
 					...response,
 					email: results.rows[0].email,
-					username: results.rows[0].username,
-					templateID: process.env.TEMPLATE_FORGOTPWD
+					username: results.rows[0].username
 				}
 				res.status(200).send(response);
 			} else {
@@ -27,10 +27,6 @@ router.post('/sendotp', (req, res) => {
 			}
 		})	
 	} else if (req.body.type === "email") {
-		response = {
-			...response,
-			templateID: process.env.TEMPLATE_SIGNUP
-		}
 		res.status(200).send(response);
 	}
 })
