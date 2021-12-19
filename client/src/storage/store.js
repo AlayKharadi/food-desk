@@ -13,6 +13,7 @@ let initialuserStore = {
 
 //retrieve the user from the local storage
 const user = JSON.parse(window.localStorage.getItem("user"));
+const cart = JSON.parse(window.localStorage.getItem("cart"));
 
 //if its available then set it
 if (user) {
@@ -26,6 +27,12 @@ if (user) {
             usertype: user.usertype
         }
     };
+    if (cart) {
+        initialuserStore = {
+            ...initialuserStore,
+            cart: cart
+        }
+    }
 }
 
 //create the global storage
