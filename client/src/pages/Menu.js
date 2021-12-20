@@ -1,4 +1,4 @@
-import { Button, Container, Alert, IconButton, Divider, Grid, Typography } from '@mui/material';
+import { Container, Alert, IconButton, Divider, Grid, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
 import AddItem from '../components/AddItem';
 import Item from '../components/Item';
@@ -43,7 +43,7 @@ const Menu = () => {
             <AddItem opencard={open} setOpenCard={setOpen} />
             <Grid container spacing={4}>
                 {
-                    (usertype === 2)
+                    (usertype === 1)
                     &&
                     (
                         <>
