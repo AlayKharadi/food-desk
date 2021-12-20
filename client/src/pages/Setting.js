@@ -32,18 +32,24 @@ const Setting = () => {
             <Container>
                 <UpdateUser />
             </Container>
-            <Container >
-                <h4>
-                    Users:
-                </h4>
-                {<SearchBar setRender={setRender} render={render} />}
-            </Container>
-            <Container >
-                <h4>
-                    Shops:
-                </h4>
-                {<ShopBar setRender={setRender} render={render} />}
-            </Container>
+            {
+                (usertype === 0) &&
+                <Container >
+                    <h4>
+                        Users:
+                    </h4>
+                    {<SearchBar setRender={setRender} render={render} />}
+                </Container>
+            }
+            {
+                (usertype === 0) &&
+                <Container >
+                    <h4>
+                        Shops:
+                    </h4>
+                    {<ShopBar setRender={setRender} render={render} />}
+                </Container>
+            }
         </Container>
     );
 }

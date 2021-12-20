@@ -4,7 +4,6 @@ import CloseIcon from '@mui/icons-material/Close';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { useState } from "react";
 import { userStore } from "../storage/store";
-import { USER_LOGGEDIN } from "../storage/actiontype";
 
 const Pricing = () => {
 
