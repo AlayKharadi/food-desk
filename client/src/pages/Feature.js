@@ -21,7 +21,7 @@ const Feature = () => {
       <img classname="img"src={Customer}/>
       </div>
     <div class="card_title title-black">
-      <p>Customer Relationship System</p>
+      <p>Customer Relationship <br/> System</p>
     </div>
   </div>
   
