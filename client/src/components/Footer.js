@@ -1,20 +1,32 @@
-
+import React, { useRef, useState } from "react";
+import emailjs from 'emailjs-com';
 import FacebookIcon from '@mui/icons-material/Facebook';
 import InstagramIcon from '@mui/icons-material/Instagram';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
-import React, { useState } from "react";
+
+const Result = () => {
+	return (
+		<p>Your message has been successful sent. i will contact you soon.....</p>
+	)
+}
+
 const Footer = () => {
-	const [cred, setCred] = useState({
-		name: "",
-		email: "",
-		message: ""
-	});
-
-	
-
+	const form = useRef();
+	const [result, showResult] = useState(false);
+	const sendEmail = (e) => {
+		e.preventDefault();
+		emailjs.sendForm('service_lae0kph', 'template_feedback', form.current, 'user_xl4ffC0fa6DHfcMEmqomQ')
+			.then((result) => {
+				console.log(result.text);
+			}, (error) => {
+				console.log(error.text);
+			});
+		e.target.reset();
+		showResult(true);
+	};
 	return (
 		<div>
-			<div id='contact' style={{ "color": "white" }}>
+			<div id='contact' style={{ color: "white", paddingTop: "9.2%" }}>
 				<div className='container'>
 					<div className='col-md-8'>
 						<div className='row'>
@@ -25,7 +37,7 @@ const Footer = () => {
 									get back to you as soon as possible.
 								</p>
 							</div>
-							<form name='sentMessage' >
+							<form ref={form} onSubmit={sendEmail} name='sentMessage'>
 								<div className='row'>
 									<div className='col-md-6'>
 										<div className='form-group'>
@@ -33,7 +45,6 @@ const Footer = () => {
 												type='text'
 												id='name'
 												name='name'
-												value={cred.name}
 												className='form-control'
 												placeholder='Name'
 												required
@@ -47,32 +58,25 @@ const Footer = () => {
 												type='email'
 												id='email'
 												name='email'
-												value={cred.email}
 												className='form-control'
 												placeholder='Email'
 												required
-
 											/>
 											<p className='help-block text-danger'></p>
 										</div>
 									</div>
 								</div>
 								<div className='form-group'>
-									<textarea
-										name='message'
-										id='message'
-										className='form-control'
-										value={cred.message}
-										rows='4'
-										placeholder='Message'
-										required
-									></textarea>
+									<input type='message' id='message' name='message' className='form-control'
+										placeholder='Email'
+										required />
 									<p className='help-block text-danger'></p>
 								</div>
 								<div id='success'></div>
 								<button type='submit' className='btn btn-custom btn-lg' style={{ "backgroundColor": "white" }}>
 									Send Message
 								</button>
+								<div>{result ? <Result /> : null}</div>
 							</form>
 						</div>
 					</div>
@@ -107,22 +111,16 @@ const Footer = () => {
 						<div className='row'>
 							<div className='social'>
 								<ul>
-
 									<a href="https://www.linkedin.com/">
 										<LinkedInIcon />
 									</a>
 									<br />
-
-
 									<a href="https://www.instagram.com/">
 										<InstagramIcon />
 									</a><br />
-
-
 									<a href="https://www.facebook.com/">
 										<FacebookIcon />
 									</a>
-
 								</ul>
 							</div>
 						</div>
@@ -133,7 +131,7 @@ const Footer = () => {
 				<div className='container text-center' style={{ "color": "white" }}>
 					<p>
 						&copy; 2020 Food Desk  Design by{' Group 17 '}
-
+						<br />
 					</p>
 				</div>
 			</div>
