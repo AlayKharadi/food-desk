@@ -28,6 +28,12 @@ router.post('/sendotp', (req, res) => {
 		})	
 	} else if (req.body.type === "email") {
 		res.status(200).send(response);
+	} else if (req.body.type === "form") {
+		response = {
+			...response,
+			templateID: process.env.TEMPLATE_FEEDBACK
+		}
+		res.status(200).send(response);
 	}
 })
 	
