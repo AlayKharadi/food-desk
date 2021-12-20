@@ -19,7 +19,7 @@ const NotFound = () => {
                     Page Not Found
                 </Grid>
                 <Grid item xs={12}>
-                    <img src={not_found} placeholder="Empty cart" width="200vw" />
+                    <img src={not_found} alt="Not Found" width="200vw" />
                 </Grid>
                 <Grid item xs={12}>
                     {/* link to the home page. */}
