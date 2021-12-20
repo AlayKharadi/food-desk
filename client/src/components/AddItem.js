@@ -46,6 +46,21 @@ const AddItem = ({ opencard, setOpenCard }) => {
             ...pwd,
             warning: ""
         });
+        setItem({
+            ...item,
+            name: {
+                ...item.name,
+                warning: ""
+            },
+            price: {
+                ...item.price,
+                warning: ""
+            },
+            description: {
+                ...item.description,
+                warning: ""
+            }
+        });
 
         //Input Constraints
         switch (e.target.name) {
