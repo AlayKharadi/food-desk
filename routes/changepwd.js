@@ -9,7 +9,7 @@ router.put('/changepwd', (req, res) => {
         if (error) {
             res.status(500).send(error);
         }
-        if (results !== undefined) {
+        if ((results !== undefined) && (results.rowCount > 0)) {
             const hashpwd = await bcryptjs.hash(req.body.newpwd, 10);
             pool.query(`UPDATE users SET password = '${hashpwd}' WHERE username = '${req.body.user}' RETURNING username, password;`, (err, result) => {
                 if (err) {
