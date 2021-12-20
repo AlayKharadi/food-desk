@@ -6,7 +6,7 @@ const Team = () => {
 		<div>
 			<div className="cards-list">
 				<div className="card 1">
-					<div className="card_image"> <img src={noprofile} /> </div>
+					<div className="card_image"> <img src={noprofile} alt="noprofile" /> </div>
 					<div className="card_title title-black">
 						<p>Kavisha Patel</p>
 					</div>
@@ -14,7 +14,7 @@ const Team = () => {
 
 				<div className="card 2">
 					<div className="card_image">
-						<img className="img" src={noprofile} />
+						<img className="img" src={noprofile} alt="noprofile" />
 					</div>
 					<div className="card_title title-black">
 						<p>Jeel Damor</p>
@@ -23,7 +23,7 @@ const Team = () => {
 
 				<div className="card 3">
 					<div className="card_image">
-						<img src={noprofile} />
+						<img src={noprofile} alt="noprofile" />
 					</div>
 					<div className="card_title">
 						<p>Kharadi Alay</p>
