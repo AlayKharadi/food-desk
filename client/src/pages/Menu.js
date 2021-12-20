@@ -1,4 +1,4 @@
-import { Button, Container, Divider, Grid, Typography } from '@mui/material';
+import { Container, Alert, IconButton, Divider, Grid, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
 import AddItem from '../components/AddItem';
 import Item from '../components/Item';
@@ -43,24 +43,27 @@ const Menu = () => {
             <AddItem opencard={open} setOpenCard={setOpen} />
             <Grid container spacing={4}>
                 {
-                    (usertype === 2)
-                        &&
+                    (usertype === 1)
+                    &&
                     (
                         <>
-                            <Grid item xs={10}>
-                                <Typography component="h5" variant="h4">
-                                    Add To Menu
-                                </Typography>
-                            </Grid>
-                            <Grid item xs={2}>
-                                <Button
-                                    variant="contained"
-                                    color="secondary"
-                                    onClick={(e) => setOpen(true)}
-                                    title="Add-To-Menu"
+                            <Grid item xs={12}>
+                                <Alert
+                                    severity="info"
+                                    action={
+                                        <IconButton
+                                            aria-label="close"
+                                            color="inherit"
+                                            onClick={() => setOpen(true)}
+                                        >
+                                            <MenuBookIcon />
+                                        </IconButton>
+                                    }
                                 >
-                                    <MenuBookIcon />
-                                </Button>
+                                    <Typography component="h1" variant="h6">
+                                        Add To Menu
+                                    </Typography>
+                                </Alert>
                             </Grid>
                             <Grid item xs={12}>
                                 <Divider />
