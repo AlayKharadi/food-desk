@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import AddItem from '../components/AddItem';
 import Item from '../components/Item';
 import MenuBookIcon from '@mui/icons-material/MenuBook';
-import { userStore } from '../storage/store';
+import { useSelector } from 'react-redux';
 
 const Menu = () => {
 
@@ -11,7 +11,8 @@ const Menu = () => {
 
     const [open, setOpen] = useState(false);
 
-    let usertype = userStore.getState().loggedInUser.usertype;
+    let usertype = useSelector(state => state.loggedInUser.usertype);
+
 
     useEffect(() => {
         fetch('/API/menu', {
@@ -32,9 +33,8 @@ const Menu = () => {
                 setCards(data);
             }
         })
-
         return () => {
-            return;
+            return false;
         }
     }, []);
 
