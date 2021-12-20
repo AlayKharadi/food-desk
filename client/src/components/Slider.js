@@ -1,7 +1,8 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import './slider.css';
-import Food1 from '../Images/Food1.png'
+
+import front from '../Images/front.png'
 
 export default function SlideShow() {
     const history = useHistory();
@@ -9,8 +10,8 @@ export default function SlideShow() {
         history.push({ pathname: '/LogIn' });
     }
     return (
-        <div class="slider-div">
-            <img src={Food1} style={{ "height": "100vh", "width": "100vw" }} ></img>
+        <div className="slider-div">
+            <img src={front} className="img" style={{ "height": "820px", "width": "100%" }} alt="front" ></img>
             <button onClick={() => OnLoginClick()}>Log In</button>
         </div>
     );
