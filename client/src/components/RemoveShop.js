@@ -1,6 +1,5 @@
 import { Grid, Container, Typography, Card, CardHeader, Box, CardActions, CardContent, Button } from '@mui/material';
 import { userStore } from "../storage/store";
-import { USER_LOGGEDIN } from '../storage/actiontype';
 
 const RemoveShop = () => {
 
