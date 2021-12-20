@@ -26,7 +26,6 @@ router.post('/menu', (req, res) => {
         if (results !== undefined) {
             const item_shopid = results.rows[0].shop_id;
             const item_id = uuidv4();
-            console.log(req.body);
             pool.query(`INSERT INTO menu (item_id, item_name, item_price, item_description, item_shopid)
             VALUES ('${item_id}','${req.body.item_name}', ${req.body.item_price}, '${req.body.item_description}', '${item_shopid}')
             RETURNING item_name;`, (err, result) => {
@@ -40,12 +39,6 @@ router.post('/menu', (req, res) => {
         }
     });
 })
-
-// router.put('/menu', (req, res) => {
-//     pool.query(`UPDATE menu SET FROM menu WHERE item_id = ${req.body.item_id};`, (error, results) => {
-         
-//     })
-// })
 
 router.delete('/menu', (req, res) => {
     pool.query(`DELETE FROM menu 
