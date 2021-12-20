@@ -1,29 +1,90 @@
-import React, { useRef, useState } from "react";
-import emailjs from 'emailjs-com';
+import React, { useState } from "react";
+import { send } from 'emailjs-com';
 import FacebookIcon from '@mui/icons-material/Facebook';
 import InstagramIcon from '@mui/icons-material/Instagram';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
 
-const Result = () => {
-	return (
-		<p>Your message has been successful sent. i will contact you soon.....</p>
-	)
-}
-
 const Footer = () => {
-	const form = useRef();
-	const [result, showResult] = useState(false);
+
+	const [cred, setCred] = useState({
+		user: "",
+		email: "",
+		description: ""
+	});
+
+	function handleChange(e) {
+		e.preventDefault();
+		if (e.target.name === "name") {
+			if ((/^[0-9a-zA-Z]*$/).test(e.target.value)) {
+				setCred({
+					...cred,
+					user: e.target.value
+				});
+			}
+		}
+		if (e.target.name === "email") {
+			setCred({
+				...cred,
+				email: e.target.value
+			});
+		}
+		if (e.target.name === "message") {
+			if ((/^[ 0-9a-zA-Z.]*$/).test(e.target.value)) {
+				setCred({
+					...cred,
+					description: e.target.value
+				});
+			}
+		}
+	}
+
 	const sendEmail = (e) => {
 		e.preventDefault();
-		emailjs.sendForm('service_lae0kph', 'template_feedback', form.current, 'user_xl4ffC0fa6DHfcMEmqomQ')
-			.then((result) => {
-				console.log(result.text);
-			}, (error) => {
-				console.log(error.text);
+		const emailpattern = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
+		if ((cred.user !== "") && (cred.email !== "") && (cred.description !== "") && (emailpattern.test(cred.email))) {
+			fetch(
+				'/API/sendotp', {
+				method: 'POST',
+				headers: {
+					'Access-Control-Allow-Origin': '*',
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify({
+					type: "form"
+				})
+			}).then(response => {
+				if (response.status === 500) {
+					return undefined;
+				}
+				return response.json();
+			}).then(data => {
+				if (data === undefined) {
+					window.alert("FeedBack send unsuccessful.");
+				} else {
+					const templateParams = {
+						from_name: cred.user,
+						from_email: cred.email,
+						from_description: cred.description,
+						app_name: data.app_name
+					}
+					send(data.serviceID, data.templateID, templateParams, data.userID)
+						.then(response => {
+							window.alert("FeedBack send successfully.");
+						}).catch(error => {
+							window.alert("FeedBack send unsuccessful.");
+						});
+					setCred({
+						user: "",
+						email: "",
+						description: ""
+					});
+				}
 			});
-		e.target.reset();
-		showResult(true);
+		}
 	};
+
+
 	return (
 		<div>
 			<div id='contact' style={{ color: "white", paddingTop: "9.2%" }}>
@@ -37,7 +98,7 @@ const Footer = () => {
 									get back to you as soon as possible.
 								</p>
 							</div>
-							<form ref={form} onSubmit={sendEmail} name='sentMessage'>
+							<form name='sentMessage'>
 								<div className='row'>
 									<div className='col-md-6'>
 										<div className='form-group'>
@@ -46,10 +107,12 @@ const Footer = () => {
 												id='name'
 												name='name'
 												className='form-control'
+												value={cred.user}
+												onChange={(e) => handleChange(e)}
 												placeholder='Name'
 												required
 											/>
-											<p className='help-block text-danger'></p>
+											<p className='help-block tex-danger'></p>
 										</div>
 									</div>
 									<div className='col-md-6'>
@@ -59,24 +122,40 @@ const Footer = () => {
 												id='email'
 												name='email'
 												className='form-control'
+												value={cred.email}
+												onChange={(e) => handleChange(e)}
 												placeholder='Email'
 												required
 											/>
-											<p className='help-block text-danger'></p>
+											<p className='help-block tex-danger'></p>
 										</div>
 									</div>
 								</div>
-								<div className='form-group'>
-									<input type='message' id='message' name='message' className='form-control'
-										placeholder='Email'
-										required />
-									<p className='help-block text-danger'></p>
+								<div className='row'>
+									<div className='col-md-12'>
+										<div className='form-group'>
+											<input
+												type='text'
+												id='message'
+												name='message'
+												className='form-control'
+												value={cred.description}
+												onChange={(e) => handleChange(e)}
+												placeholder='Message'
+												required
+											/>
+											<p className='help-block tex-danger'></p>
+										</div>
+									</div>
 								</div>
-								<div id='success'></div>
-								<button type='submit' className='btn btn-custom btn-lg' style={{ "backgroundColor": "white" }}>
+								<button
+									type='submit'
+									onClick={(e) => sendEmail(e)}
+									className='btn btn-custom btn-lg'
+									style={{ "backgroundColor": "white" }}
+								>
 									Send Message
 								</button>
-								<div>{result ? <Result /> : null}</div>
 							</form>
 						</div>
 					</div>

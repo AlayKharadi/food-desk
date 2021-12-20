@@ -11,7 +11,7 @@ export default function SlideShow() {
     }
     return (
         <div className="slider-div">
-            <img src={front} className="img" style={{ "height": "820px", "width": "100%" }} ></img>
+            <img src={front} className="img" style={{ "height": "820px", "width": "100%" }} alt="front" ></img>
             <button onClick={() => OnLoginClick()}>Log In</button>
         </div>
     );
