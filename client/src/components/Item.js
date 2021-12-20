@@ -1,4 +1,4 @@
-import { Button, ButtonGroup, Card, CardActions, CardContent, CardMedia, Typography, Alert} from '@mui/material';
+import { Button, ButtonGroup, Card, CardActions, CardContent, CardMedia, Typography, Alert } from '@mui/material';
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import LocalAtmTwoToneIcon from '@mui/icons-material/LocalAtmTwoTone';
@@ -48,6 +48,10 @@ const Item = ({ food }) => {
             }
         });
         window.localStorage.setItem("cart", JSON.stringify(userStore.getState().cart));
+    }
+
+    function RemoveItem(e) {
+        e.preventDefault();
     }
 
     return (
@@ -132,6 +136,19 @@ const Item = ({ food }) => {
                         <LocalAtmTwoToneIcon />
                     </Link>
                 </Button>
+                {
+                    (food.shop_owner === userStore.getState().loggedInUser.username)
+                    &&
+                    <Button
+                        size="small"
+                        variant="contained"
+                        title="Remove"
+                        onClick={(e) => RemoveItem(e)}
+                        color="secondary"
+                    >
+                        <RemoveIcon />
+                    </Button>
+                }
                 <Button
                     disabled={cart}
                     size="small"

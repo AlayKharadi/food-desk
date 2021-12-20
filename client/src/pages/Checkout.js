@@ -1,5 +1,4 @@
 import { Container, Grid } from "@mui/material";
-//import { useState } from "react";
 import { useSelector } from "react-redux";
 import empty_cart from '../Images/empty_cart.svg';
 import { Link } from 'react-router-dom';
@@ -20,15 +19,6 @@ const Checkout = () => {
             total = total - promo[i].value;
         }
     }
-
-    // const [cred, setCred] = useState({
-    //     firstname: "",
-    //     lastname: "",
-    //     address: "",
-    //     country: "",
-    //     state: "",
-    //     zip: ""
-    // });
 
     if (cart.length === 0) {
         return (
@@ -81,7 +71,7 @@ const Checkout = () => {
                                     &&
                                     promo.map((item, index) => {
                                         return (
-                                            <li className="list-group-item d-flex justify-content-between bg-light">
+                                            <li key={index} className="list-group-item d-flex justify-content-between bg-light">
                                                 <div className="text-success">
                                                     <h6 className="my-0">Promo code</h6>
                                                     <small>{item.name}</small>
