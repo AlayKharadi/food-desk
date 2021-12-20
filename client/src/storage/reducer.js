@@ -4,8 +4,7 @@ export default function reducer(state, action) {
     switch (action.type) {
         case action_type.USER_LOGGEDIN: {
             if (state.loggedInUser.username === null) {
-                //set the user data
-                let newstate = {
+                return {
                     ...state,
                     loggedInUser: {
                         ...state.loggedInUser,
@@ -14,7 +13,6 @@ export default function reducer(state, action) {
                         usertype: action.payload.usertype
                     }
                 };
-                return newstate;
             }
             return state;
         }

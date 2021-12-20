@@ -9,7 +9,7 @@ router.post('/login', (req, res) => {
         if (error) {
             res.status(500).send(error);
         }
-        if (results !== undefined) {
+        if ((results !== undefined) && (results.rowCount > 0)) {
             bcryptjs.compare(req.body.pwd, results.rows[0].password, (err, isMatch) => {
                 if (err) {
                     res.status(500).send(err);
