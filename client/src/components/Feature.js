@@ -8,7 +8,7 @@ const Feature = () => {
 		<div>
 			<div className="cards-list">
 				<div className="card 1">
-					<div className="card_image"> <img src={cafemanagment} /> </div>
+					<div className="card_image"> <img src={cafemanagment} alt="cafe" /> </div>
 					<div className="card_title title-black">
 						<p>Cafeteria Inventory Management</p>
 					</div>
@@ -16,7 +16,7 @@ const Feature = () => {
 
 				<div className="card 2">
 					<div className="card_image">
-						<img className="img" src={Customer} />
+						<img className="img" src={Customer} alt="customer" />
 					</div>
 					<div className="card_title title-black">
 						<p>Customer Relationship <br /> System</p>
@@ -25,7 +25,7 @@ const Feature = () => {
 
 				<div className="card 3">
 					<div className="card_image">
-						<img src={Easymanagment} />
+						<img src={Easymanagment} alt="easy" />
 					</div>
 					<div className="card_title">
 						<p>Easy Management</p>
@@ -34,7 +34,7 @@ const Feature = () => {
 
 				<div className="card 4">
 					<div className="card_image">
-						<img src={flexible} />
+						<img src={flexible} alt="flexible" />
 					</div>
 					<div className="card_title title-black">
 						<p>Flexible</p>
