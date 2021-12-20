@@ -9,7 +9,7 @@ const Aboutus = () => {
 					<span className="w3-tag w3-wide"></span></h5>
 				<h1>
 					<nav>
-						<center><a href="" className="w3-block" style={{ textDecoration: "underline", color: "black" }}>ABOUT US </a></center>
+						<center><a href="#about" className="w3-block" style={{ textDecoration: "underline", color: "black" }}>ABOUT US </a></center>
 					</nav>
 				</h1>
 
@@ -26,7 +26,7 @@ const Aboutus = () => {
 											<br />Fresh is the new sweet.
 											<br />Chef, Coffeeist and Owner: Shreena Kapadiya
 										</b>
-										<img src={Pic1} style={{ width: '80%', maxWidth: '700px' }} className="w3-margin-top" />
+										<img src={Pic1} alt="cafe" style={{ width: '80%', maxWidth: '700px' }} className="w3-margin-top" />
 									</p>
 								</center>
 							</div>

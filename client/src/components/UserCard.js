@@ -1,4 +1,4 @@
-import { Container, Alert, AlertTitle, Typography, Grid, Box } from "@mui/material";
+import { Container, Alert, AlertTitle, Box } from "@mui/material";
 import { useSelector } from "react-redux";
 const UserCard = () => {
     let user = useSelector(state => state.loggedInUser);
