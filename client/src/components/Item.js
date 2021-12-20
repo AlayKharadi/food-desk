@@ -1,4 +1,4 @@
-import { Button, ButtonGroup, Card, CardActions, CardContent, CardMedia, Typography, Alert, Grid } from '@mui/material';
+import { Button, ButtonGroup, Card, CardActions, CardContent, CardMedia, Typography, Alert} from '@mui/material';
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import LocalAtmTwoToneIcon from '@mui/icons-material/LocalAtmTwoTone';
@@ -6,6 +6,7 @@ import RemoveIcon from '@mui/icons-material/Remove';
 import AddIcon from '@mui/icons-material/Add';
 import breakfast from "../Images/breakfast.svg";
 import { useSelector } from "react-redux";
+import { Link } from 'react-router-dom';
 import { userStore } from '../storage/store';
 import { ADD_TO_CART, UPDATE_QUANTITY } from '../storage/actiontype';
 
@@ -121,7 +122,15 @@ const Item = ({ food }) => {
                     variant="contained"
                     title="Order"
                 >
-                    <LocalAtmTwoToneIcon />
+                    <Link
+                        style={{
+                            textDecoration: "none"
+                        }}
+                        className="text-light"
+                        to='/Payment'
+                    >
+                        <LocalAtmTwoToneIcon />
+                    </Link>
                 </Button>
                 <Button
                     disabled={cart}
