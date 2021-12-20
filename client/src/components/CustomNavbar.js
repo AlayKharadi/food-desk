@@ -1,4 +1,3 @@
-import { useEffect, useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import { userStore } from "../storage/store";
 import { USER_LOGOUT } from "../storage/actiontype";
