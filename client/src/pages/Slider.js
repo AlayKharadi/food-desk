@@ -4,7 +4,7 @@ import {useHistory } from 'react-router-dom';
 
 import './slider.css';
 
-import Food1 from '../Images/Food1.png'
+import front from '../Images/front.png'
 
 
 
@@ -15,14 +15,16 @@ import Food1 from '../Images/Food1.png'
 
  const OnLoginClick = () =>{
      history.push({pathname : '/LogIn'});
+     
  }
+ 
     return (
         
-        <div class="slider-div">
-      
-
-            <img src={Food1} style={{"height":"100vh","width":"100vw"}} ></img>
-            <button onClick ={()=>OnLoginClick ()}>Log In</button>
+        <div className="slider-div">
+            <img src={front} ClassName="img" style={{"height": "820px","width":"100%"}} ></img>
+            <button onClick ={()=>OnLoginClick ()}>Log In</button> 
+            
+            
     </div>
         
 
