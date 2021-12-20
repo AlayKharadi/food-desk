@@ -72,6 +72,26 @@ export default function reducer(state, action) {
             }
             return state;
         }
+        case action_type.ADD_PROMO: {
+            return {
+                ...state,
+                promo: [
+                    ...state.promo,
+                    {
+                        name: action.payload.name,
+                        value: action.payload.value
+                    }
+                ]
+            };
+        }
+        case action_type.REMOVE_PROMO: {
+            return {
+                ...state,
+                promo: state.promo.filter(item => {
+                    return (item.name !== action.payload.name);
+                })
+            };
+        }
         default: {
             return state;
         }
