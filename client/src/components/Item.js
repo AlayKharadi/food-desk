@@ -52,6 +52,29 @@ const Item = ({ food }) => {
 
     function RemoveItem(e) {
         e.preventDefault();
+        fetch('/API/menu', {
+            method: 'DELETE',
+            headers: {
+                'Access-Control-Allow-Origin': '*',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                item_id: food.item_id
+            })
+        }).then(response => {
+            //check the response
+            if (response.status === 500) {
+                return false;
+            }
+            return response.json();
+        }).then(data => { 
+            if (data === true) {
+                window.alert("Item Removed from Menu successfully.");
+                window.location.reload();
+            } else {
+                window.alert("Unsuccessfull in Removing item to Menu.");
+            }
+        })
     }
 
     return (
