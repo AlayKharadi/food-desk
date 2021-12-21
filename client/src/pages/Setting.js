@@ -1,5 +1,4 @@
 import { Container } from "@mui/material";
-import { useState } from "react";
 import { useSelector } from "react-redux";
 import Pricing from "../components/Pricing";
 import RemoveShop from "../components/RemoveShop";
@@ -10,7 +9,6 @@ import UserCard from "../components/UserCard";
 
 const Setting = () => {
     let usertype = useSelector(state => state.loggedInUser.usertype);
-    const [render, setRender] = useState(false);
 
     return (
         <Container style={{ padding: "1em" }}>
@@ -38,7 +36,7 @@ const Setting = () => {
                     <h4>
                         Users:
                     </h4>
-                    {<SearchBar setRender={setRender} render={render} />}
+                    {<SearchBar />}
                 </Container>
             }
             {
@@ -47,7 +45,7 @@ const Setting = () => {
                     <h4>
                         Shops:
                     </h4>
-                    {<ShopBar setRender={setRender} render={render} />}
+                    {<ShopBar />}
                 </Container>
             }
         </Container>
