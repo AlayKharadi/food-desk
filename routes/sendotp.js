@@ -31,7 +31,8 @@ router.post('/sendotp', (req, res) => {
 	} else if (req.body.type === "form") {
 		response = {
 			...response,
-			templateID: process.env.TEMPLATE_FEEDBACK
+			templateID: process.env.TEMPLATE_FEEDBACK,
+			to_email: process.env.APP_EMAIL
 		}
 		res.status(200).send(response);
 	}

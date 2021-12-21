@@ -42,7 +42,7 @@ router.post('/menu', (req, res) => {
 
 router.delete('/menu', (req, res) => {
     pool.query(`DELETE FROM menu 
-    WHERE item_id=${req.body.item_id} 
+    WHERE item_id='${req.body.item_id}' 
     RETURNING item_id;`, (error, results) => {
         if (error) {
             res.status(500).send(error);
