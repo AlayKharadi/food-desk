@@ -65,6 +65,7 @@ const Footer = () => {
 					const templateParams = {
 						from_name: cred.user,
 						from_email: cred.email,
+						to_email: data.to_email,
 						from_description: cred.description,
 						app_name: data.app_name
 					}
