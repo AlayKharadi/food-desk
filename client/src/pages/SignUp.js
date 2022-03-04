@@ -165,7 +165,7 @@ const SignUp = () => {
 
     function generateOTP() {
         var otp = "";
-        var options = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+        var options = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+=|\}]{;:'></?  ";
 
         for (var i = 0; i < 10; i++)
             otp += options.charAt(Math.floor(Math.random() * options.length));
