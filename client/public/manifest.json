@@ -1,7 +1,7 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
-  "start_url": ".",
+  "short_name": "Food Desk",
+  "name": "This is a group project which is part of our IT-414 course. Its an system which allows customers and provider(cafeteria team) to communicate with eachother",
+  "start_url": "/",
   "display": "standalone",
   "theme_color": "#000000",
   "background_color": "#ffffff"

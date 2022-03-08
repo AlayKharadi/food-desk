@@ -18,7 +18,7 @@ export default function HomePage() {
 							<a href="#home" id="logo">FOOD DESK</a>
 							<div id="navbar-right">
 								<a href="#about" >About</a>
-								<a href="#Feature">Feature</a>
+								<a href="#Feature">Features</a>
 								<a href="#team">Team</a>
 								<a href="#contact">Contact</a>
 							</div>
@@ -46,7 +46,7 @@ export default function HomePage() {
 							<span className="w3-tag w3-wide"></span></h5>
 						<h1>
 							<nav style={{ paddingTop: "10%" }}>
-								<center><a href="#Feature" style={{ textDecoration: "underline", "color": "black", paddingTop: "90%" }}>FEATURE </a> </center>
+								<center><a href="#Feature" style={{ textDecoration: "underline", "color": "black", paddingTop: "90%" }}>FEATURES </a> </center>
 							</nav>
 						</h1>
 						<Feature />
